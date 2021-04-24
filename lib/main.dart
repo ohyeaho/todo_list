@@ -23,29 +23,47 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  List<String> todoList = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Todo list'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Todo リスト',
+      body: ListView.builder(
+        itemCount: todoList.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: ListTile(
+              title: Text(
+                todoList[index],
+              ),
             ),
-          ],
-        ),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.add,
         ),
-        onPressed: () {
-          Navigator.pushNamed(context, '/todo_add_page');
+        onPressed: () async {
+          final newListText = await Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) {
+              return TodoAddPage();
+            }),
+          );
+          if (newListText != null) {
+            setState(() {
+              todoList.add(newListText);
+            });
+          }
         },
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

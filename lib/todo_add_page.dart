@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
-class TodoAddPage extends StatelessWidget {
+class TodoAddPage extends StatefulWidget {
+  @override
+  _TodoAddPageState createState() => _TodoAddPageState();
+}
+
+class _TodoAddPageState extends State<TodoAddPage> {
+  String _text = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,12 +19,16 @@ class TodoAddPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'リスト追加',
+              _text,
             ),
-            TextField(),
+            TextField(onChanged: (String value) {
+              setState(() {
+                _text = value;
+              });
+            }),
             RaisedButton(
               onPressed: () {
-                //todo
+                Navigator.pop(context, _text);
               },
               child: Text(
                 '追加',
@@ -25,7 +36,7 @@ class TodoAddPage extends StatelessWidget {
             ),
             FlatButton(
               onPressed: () {
-                //todo
+                Navigator.pop(context);
               },
               child: Text(
                 'キャンセル',
